@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Blockies from 'react-blockies';
 
@@ -28,8 +28,13 @@ class MainScreenView extends Component {
             left
           </p>
           <button
-            className="btn main-screen-btn"
+            className={
+              this.props.lastClick == 0
+                ? 'btn main-screen-btn loadbar'
+                : 'btn main-screen-btn'
+            }
             onClick={this.props.onClickerClick}
+            disabled={this.props.lastClick == 0}
           >
             click here
           </button>
@@ -43,7 +48,11 @@ class MainScreenView extends Component {
           </p>
           <hr className="separator" />
           <div className="click-history">
-            {this.props.events.map(this.renderEvent.bind(this))}
+            {this.props.events.length == 0 ? (
+              <div className="loading"> Loading activity </div>
+            ) : (
+              this.props.events.map(this.renderEvent.bind(this))
+            )}
           </div>
         </div>
       </div>
