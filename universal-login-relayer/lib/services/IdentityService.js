@@ -16,9 +16,11 @@ class IdentityService {
   }
 
   async create(managementKey, ensName, overrideOptions = {}) {
+		console.log(managementKey, ensName, overrideOptions);
     const key = addressToBytes32(managementKey);
     const bytecode = `0x${Identity.bytecode}`;
     const ensArgs = this.ensService.argsFor(ensName);
+		console.log(JSON.stringify(ensArgs));
     if (ensArgs !== null) {
       const args = [key, ...ensArgs];
       const deployTransaction = {
@@ -28,8 +30,10 @@ class IdentityService {
       };
       const transaction = await this.wallet.sendTransaction(deployTransaction);
       this.hooks.emit('created', transaction);
+			console.log(JSON.stringify(transaction));
       return transaction;
     }
+		console.log('domain not existing / not universal ID compatible');
     throw new Error('domain not existing / not universal ID compatible');
   }
 
