@@ -9,11 +9,14 @@ import fs from 'fs';
 
 const publicResolverAddress = '0x5d20cf83cb385e06d2f2a892f9322cd4933eacdc';
 const ensAddress = '0xe7410170f87102df0055eb195163a03b7f2bff4a';
+//const publicResolverAddress = '0x4c641fb9bad9b60ef180c31f56051ce826d21a9a';
+//const ensAddress = '0x112234455c3a32fd11230c42e7bccd4a84e02010';
+const network = 'rinkeby';
 
 class Registrar {
   constructor() {
     /* eslint-disable new-cap */
-    this.provider = getDefaultProvider('rinkeby');
+    this.provider = getDefaultProvider(network);
     this.deployer = new Wallet(config.privateKey, this.provider);
     this.ens = new Contract(ensAddress, ENS.interface, this.deployer);
     this.variables = {};
@@ -41,8 +44,8 @@ class Registrar {
     }
     return receipt.contractAddress;
   }
-  
-  async waitToBeMined(transaction, timeout = 1000) {    
+
+  async waitToBeMined(transaction, timeout = 1000) {
     let receipt = await this.provider.getTransactionReceipt(transaction.hash);
     while (!receipt || !receipt.blockNumber) {
       this.sleep(timeout);
@@ -92,4 +95,4 @@ class Registrar {
   }
 }
 const registrar = new Registrar();
-registrar.start('my-domain');
+registrar.start('proteaio');
